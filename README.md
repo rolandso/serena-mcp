@@ -50,18 +50,13 @@ Or visit http://localhost:24282/dashboard/ directly.
 
 This makes Serena available in every Claude Code session.
 
-Create or edit `~/.claude/.mcp.json`:
+Run:
 
-```json
-{
-  "mcpServers": {
-    "serena": {
-      "type": "sse",
-      "url": "http://localhost:9121/sse"
-    }
-  }
-}
+```bash
+claude mcp add --transport sse serena http://localhost:9121/sse --scope user
 ```
+
+This writes the server config to `~/.claude.json`. Do not use `~/.claude/.mcp.json` — Claude Code does not read that file.
 
 Restart any running Claude Code sessions for the change to take effect.
 
@@ -124,6 +119,7 @@ All commands are run from the `claude-mcp` directory.
 
 - Check that port 24282 isn't used by another process: `lsof -i :24282`
 - Do NOT use `network_mode: host` on macOS — it doesn't forward ports to the host
+- Check `config/serena_config.yml` — `web_dashboard_listen_address` must be `0.0.0.0`, not `127.0.0.1`. If it's set to loopback, the dashboard binds only inside the container and is unreachable from the host even though the port is mapped.
 
 ### Project not showing in dashboard
 
